@@ -1,0 +1,12 @@
+bcc -ansi -c main.c
+
+nasm -fbin impA.asm -o impa.bin
+nasm -fbin impB.asm -o impb.bin
+
+nasm -fas86 kernel.asm -o kernel.o
+
+ld86 -d -o kernel.bin kernel.o main.o
+
+nasm -fbin -o a.img loader.asm 
+
+bochs -f linbochs

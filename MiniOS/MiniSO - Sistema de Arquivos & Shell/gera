@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Comilando o c�igo C
+bcc -ansi -c main.c conversoes.c processos.c shell.c
+
+#compila os processos de teste
+nasm -f bin -o impA.bin impA.asm
+nasm -f bin -o impB.bin impB.asm
+
+# compilando a chamada para a fun�o do c�igo C
+nasm -f as86 -o entry.o entry.asm
+
+# compilando as fun�es em assembly
+nasm -f as86 -o rotproc.o rotproc.asm
+nasm -f as86 -o interrupcao.o interrupcao.asm
+nasm -f as86 -o rotshell.o rotshell.asm
+nasm -f as86 -o divide.o divide.asm
+
+# linkando os c�igos objeto em um arquivo bin�io
+ld86 -d  -o kernel.bin entry.o rotproc.o main.o conversoes.o processos.o interrupcao.o shell.o rotshell.o divide.o
+
+# PARA DEPURAR USE ESTE
+# ld86 -d -M  -o kernel.bin entry.o rotproc.o main.o conversoes.o processos.o interrupcao.o
+
+# gerando a imagem do disquete
+nasm -f bin -o a.img loader.asm
+
+# executando a simulação
+#bochs -f linbochsrc
